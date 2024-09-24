@@ -11,37 +11,41 @@
  *         this.left = left;
  *         this.right = right;
  *     }
- * }1
+ * }
  */
-class Solution {
-    public TreeNode findKey(TreeNode root, int key) {
-    if (root == null) return root; 
-
-    if (root.val == key) {
-        if (root.left == null && root.right == null) {
-            return null;
-        }
-        if(root.left != null &&  root.right == null ){
-            return root.left;
-        }
-         if(root.left == null &&  root.right != null ){
-            return root.right;
-        }
-         if(root.left != null &&  root.right != null ){
-            return findMax(root.left);
-        }
-    }
-
-    if (root.val > key) return findKey(root.left, key);
-    return findKey(root.right, key);
+class TreeNode {
+    int val;
+    TreeNode left;
+    TreeNode right;
+    TreeNode(int val) { this.val = val; }
 }
 
-    public TreeNode findMax(TreeNode root){
-        if(root.right == null) return root;
-
-        return findMax(root.right);
-    }
+public class Solution {
     public TreeNode deleteNode(TreeNode root, int key) {
-        return findKey(root,key);
+        if (root == null) return null;
+        
+        if (key < root.val) {
+            root.left = deleteNode(root.left, key);
+        } else if (key > root.val) {
+            root.right = deleteNode(root.right, key);
+        } else {
+            if (root.left == null) {
+                return root.right;
+            } else if (root.right == null) {
+                return root.left;
+            }
+
+            TreeNode minNode = findMin(root.right);
+            root.val = minNode.val;
+            root.right = deleteNode(root.right, minNode.val); // 최소값을 가진 노드 삭제
+        }
+        return root;
+    }
+
+    private TreeNode findMin(TreeNode node) {
+        while (node.left != null) {
+            node = node.left;
+        }
+        return node;
     }
 }
