@@ -30,7 +30,6 @@ class Solution {
         // BFS 탐색
         while (!queue.isEmpty()) {
             int size = queue.size();
-            boolean rottenThisMinute = false; // 이 분에 썩은 오렌지가 있는지 확인
             
             for (int i = 0; i < size; i++) {
                 int[] current = queue.poll();
@@ -47,17 +46,14 @@ class Solution {
                         grid[newRow][newCol] = 2; // 썩은 오렌지로 변경
                         queue.offer(new int[] {newRow, newCol}); // 새로운 썩은 오렌지 큐에 추가
                         freshOranges--; // 신선한 오렌지 개수 감소
-                        rottenThisMinute = true; // 이 분에 썩은 오렌지가 있었음을 표시
                     }
                 }
             }
             
-            if (rottenThisMinute) {
                 minutes++; // 한 분 경과
-            }
         }
         
         // 모든 신선한 오렌지가 썩었는지 확인
-        return freshOranges == 0 ? minutes : -1;
+        return freshOranges == 0 ? minutes-1 : -1;
     }
 }
